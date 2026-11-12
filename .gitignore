@@ -1,0 +1,15 @@
+﻿.idea/
+.vscode/
+SA7_Evidence/
+
+.env
+.env.*
+!.env.example
+
+**/vendor/
+**/node_modules/
+**/.dart_tool/
+**/build/
+
+*.log
+backend/database/*.sqlite*
