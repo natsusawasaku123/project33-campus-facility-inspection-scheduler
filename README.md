@@ -267,5 +267,4 @@ This version demonstrates the inspection-to-alert workflow through Flutter scree
 ## Acknowledgments
 
 - Built with [Flutter](https://docs.flutter.dev/), the Dart `http` package, [Laravel 12](https://laravel.com/docs/12.x), Laravel Sanctum, and SQLite.
-- The [Student Document Request Tracker README](https://github.com/GhostOfCharles/student-document-request-tracker) was used as an organizational reference. It is a separate project owned by another developer.
-- ChatGPT/Codex assisted with development guidance and README preparation. The submitted report should describe the student's own work and acknowledge assistance according to the course rules.
+- ChatGPT/Codex assisted with development guidance and README preparation.
