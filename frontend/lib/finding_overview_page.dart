@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'campus_theme.dart';
+
 class FindingOverviewPage extends StatefulWidget {
   const FindingOverviewPage({
     super.key,
@@ -116,15 +118,15 @@ class _FindingOverviewPageState extends State<FindingOverviewPage> {
             const SizedBox(height: 8),
             Text(
               '${summary['inspections_completed']} of '
-                  '${summary['inspections_scheduled']} scheduled inspections completed',
+              '${summary['inspections_scheduled']} scheduled inspections completed',
             ),
             Text(completion),
             const SizedBox(height: 8),
             const Text('Current findings'),
             Text(
               '${summary['open_findings']} open · '
-                  '${summary['overdue_findings']} overdue · '
-                  '${summary['escalated_open_findings']} escalated',
+              '${summary['overdue_findings']} overdue · '
+              '${summary['escalated_open_findings']} escalated',
             ),
             Text('${summary['manual_review_alerts']} alerts need human review'),
           ],
@@ -164,7 +166,13 @@ class _FindingOverviewPageState extends State<FindingOverviewPage> {
   }
 
   Widget _alertList(List<Map<String, dynamic>> alerts) {
-    if (alerts.isEmpty) return const Text('No finding alerts.');
+    if (alerts.isEmpty) {
+      return const CampusEmptyState(
+        icon: Icons.notifications_none_rounded,
+        title: 'No finding alerts.',
+        detail: 'There are no delivered alerts for your account right now.',
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

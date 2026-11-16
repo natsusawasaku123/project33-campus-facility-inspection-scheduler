@@ -3,13 +3,13 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\InspectionChecklistController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->only(['id', 'name', 'role']);
 })->middleware('auth:sanctum');
 Route::get('/health', function () {
     return response()->json(['status' => 'ok']);
@@ -21,29 +21,8 @@ Route::get('/facilities', function () {
 
     return response()->json($facilities);
 });
-Route::post('/auth/login', function (Request $request) {
-    $credentials = $request->validate([
-        'email' => ['required', 'email', 'max:255'],
-        'password' => ['required', 'string', 'max:64'],
-    ]);
-
-    if (!Auth::once($credentials)) {
-        return response()->json(['message' => 'Invalid email or password.'], 401);
-    }
-
-    $user = Auth::user();
-
-    if ($user->role === null) {
-        return response()->json(['message' => 'This account needs a role.'], 403);
-    }
-
-    $token = $user->createToken('project33-demo', ['*'], now()->addHour());
-
-    return response()->json([
-        'token' => $token->plainTextToken,
-        'user' => $user->only(['id', 'name', 'email', 'role']),
-    ])->header('Cache-Control', 'no-store');
-})->middleware('throttle:5,1');
+Route::post('/auth/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::get('/inspectors', function (Request $request) {
     if ($request->user()->role !== 'supervisor') {
         return response()->json([

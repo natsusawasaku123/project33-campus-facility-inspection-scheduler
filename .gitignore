@@ -1,6 +1,14 @@
 ﻿.idea/
 .vscode/
 SA7_Evidence/
+SA8_Evidence/
+IA5_Evidence/
+.local/
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
 
 .env
 .env.*

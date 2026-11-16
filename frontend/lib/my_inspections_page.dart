@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'inspection_checklist_page.dart';
+import 'campus_theme.dart';
 
 class MyInspectionsPage extends StatefulWidget {
   const MyInspectionsPage({
@@ -99,7 +100,19 @@ class _MyInspectionsPageState extends State<MyInspectionsPage> {
 
           final inspections = snapshot.data ?? const <_Inspection>[];
           if (inspections.isEmpty) {
-            return const Center(child: Text('No inspections assigned.'));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 470),
+                  child: const CampusEmptyState(
+                    icon: Icons.fact_check_outlined,
+                    title: 'No inspections assigned.',
+                    detail: 'Your assigned inspections will appear here when a supervisor schedules them.',
+                  ),
+                ),
+              ),
+            );
           }
 
           final localizations = MaterialLocalizations.of(context);
@@ -108,7 +121,9 @@ class _MyInspectionsPageState extends State<MyInspectionsPage> {
             itemCount: inspections.length,
             itemBuilder: (context, index) {
               final inspection = inspections[index];
-              final date = localizations.formatShortDate(inspection.scheduledAt);
+              final date = localizations.formatShortDate(
+                inspection.scheduledAt,
+              );
               final time = localizations.formatTimeOfDay(
                 TimeOfDay.fromDateTime(inspection.scheduledAt),
               );
@@ -131,7 +146,9 @@ class _MyInspectionsPageState extends State<MyInspectionsPage> {
 
                     if (mounted) _refresh();
                   },
-                  subtitle: Text('Inspection #${inspection.id}\n$date at $time'),
+                  subtitle: Text(
+                    'Inspection #${inspection.id}\n$date at $time',
+                  ),
                   isThreeLine: true,
                   trailing: Text(inspection.status),
                 ),

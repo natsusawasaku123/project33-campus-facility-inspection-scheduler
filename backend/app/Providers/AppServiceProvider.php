@@ -19,6 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Illuminate\Http\Middleware\TrustProxies::at(config('security.trusted_proxies', []));
     }
 }

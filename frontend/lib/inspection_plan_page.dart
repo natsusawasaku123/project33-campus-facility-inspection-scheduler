@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'campus_theme.dart';
+
 class InspectionPlanPage extends StatefulWidget {
   const InspectionPlanPage({
     super.key,
@@ -104,7 +106,13 @@ class _InspectionPlanPageState extends State<InspectionPlanPage> {
     );
     if (!mounted || time == null) return;
 
-    final dueAt = DateTime(day.year, day.month, day.day, time.hour, time.minute);
+    final dueAt = DateTime(
+      day.year,
+      day.month,
+      day.day,
+      time.hour,
+      time.minute,
+    );
     final dateLabel = MaterialLocalizations.of(context).formatMediumDate(dueAt);
     final timeLabel = time.format(context);
 
@@ -183,9 +191,28 @@ class _InspectionPlanPageState extends State<InspectionPlanPage> {
       child: ListView(
         padding: const EdgeInsets.all(24),
         children: [
-          Text(
-            widget.facilityName,
-            style: Theme.of(context).textTheme.titleLarge,
+          CampusPanel(
+            color: context.campus.soft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.event_available_outlined,
+                  color: context.campus.accent,
+                  size: 28,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  widget.facilityName,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'A thoughtful schedule starts with this space.',
+                  style: TextStyle(fontSize: 12, color: context.campus.muted),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<int>(
