@@ -2,7 +2,7 @@
 
 **Project 33 · Week 14 SA8 and IA5 · Secure Integration**
 
-The Week 14 update adds trusted local HTTPS, token revocation, safe security logs, minimized user responses, security regression tests and a responsive blue/purple campus dashboard. Start with the [Week 14 setup and evidence guide](docs/WEEK14_SETUP.md) and [security decisions and remaining risks](docs/WEEK14_SECURITY.md).
+The Week 14 update adds trusted local HTTPS, token revocation, safe security logs, minimized user responses, security regression tests and a responsive lilac/ivory dashboard with light and dark themes. Start with the [Week 14 setup and evidence guide](docs/WEEK14_SETUP.md), [security decisions and remaining risks](docs/WEEK14_SECURITY.md), and [interface guide](docs/UI_LILAC_GUIDE.md).
 
 Use **https://localhost:8443** for the Week 14 application and API. The older HTTP commands below describe the original Week 13 workflow; use the Week 14 guide's build, configuration and Caddy steps for this branch.
 

@@ -41,6 +41,21 @@ void main() {
           revoked = true;
           return http.Response('', 204);
         }
+        if (request.url.path.endsWith('/compliance-summary')) {
+          return http.Response(
+            jsonEncode({
+              'date': '2026-11-17',
+              'timezone': 'Asia/Manila',
+              'inspections_scheduled': 0,
+              'inspections_completed': 0,
+              'open_findings': 0,
+            }),
+            200,
+          );
+        }
+        if (request.url.path.endsWith('/finding-alerts')) {
+          return http.Response('[]', 200);
+        }
         return http.Response('{}', 404);
       });
       addTearDown(client.close);

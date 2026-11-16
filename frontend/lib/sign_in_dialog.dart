@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'campus_theme.dart';
+
 class DemoSession {
   const DemoSession({
     required this.token,
@@ -71,6 +73,7 @@ class _SignInDialogState extends State<SignInDialog> {
   final _password = TextEditingController();
 
   bool _busy = false;
+  bool _hidePassword = true;
   String? _error;
 
   @override
@@ -140,7 +143,26 @@ class _SignInDialogState extends State<SignInDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Sign in'),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            backgroundColor: context.campus.soft,
+            foregroundColor: context.campus.accent,
+            child: const Icon(Icons.spa_outlined),
+          ),
+          const SizedBox(height: 18),
+          Text(
+            'Welcome back.',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Sign in to your campus workspace.',
+            style: TextStyle(fontSize: 13, color: context.campus.muted),
+          ),
+        ],
+      ),
       scrollable: true,
       content: SizedBox(
         width: 380,
@@ -153,7 +175,10 @@ class _SignInDialogState extends State<SignInDialog> {
               TextFormField(
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(labelText: 'Email address'),
+                decoration: const InputDecoration(
+                  labelText: 'Email address',
+                  prefixIcon: Icon(Icons.alternate_email_rounded, size: 20),
+                ),
                 validator: (value) {
                   final email = value?.trim() ?? '';
                   if (email.length > 255 ||
@@ -166,10 +191,25 @@ class _SignInDialogState extends State<SignInDialog> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _password,
-                obscureText: true,
+                obscureText: _hidePassword,
                 autocorrect: false,
                 enableSuggestions: false,
-                decoration: const InputDecoration(labelText: 'Password'),
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20),
+                  suffixIcon: IconButton(
+                    tooltip: _hidePassword ? 'Show password' : 'Hide password',
+                    onPressed: _busy
+                        ? null
+                        : () => setState(() => _hidePassword = !_hidePassword),
+                    icon: Icon(
+                      _hidePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      size: 20,
+                    ),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty || value.length > 64) {
                     return 'Enter a password of up to 64 characters.';

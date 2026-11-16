@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'campus_theme.dart';
+
 class FindingOverviewPage extends StatefulWidget {
   const FindingOverviewPage({
     super.key,
@@ -164,7 +166,13 @@ class _FindingOverviewPageState extends State<FindingOverviewPage> {
   }
 
   Widget _alertList(List<Map<String, dynamic>> alerts) {
-    if (alerts.isEmpty) return const Text('No finding alerts.');
+    if (alerts.isEmpty) {
+      return const CampusEmptyState(
+        icon: Icons.notifications_none_rounded,
+        title: 'No finding alerts.',
+        detail: 'There are no delivered alerts for your account right now.',
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
