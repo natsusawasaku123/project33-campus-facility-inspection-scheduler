@@ -63,7 +63,8 @@ class _InspectionChecklistPageState extends State<InspectionChecklistPage> {
       200 => null,
       401 || 403 => 'Go back and sign in again as the inspector.',
       404 => 'This inspection is unavailable.',
-      409 => 'A checklist was already saved. Use Refresh to see the saved answers.',
+      409 =>
+        'A checklist was already saved. Use Refresh to see the saved answers.',
       422 => 'The server rejected these answers. Use Refresh and try again.',
       _ => 'The server returned HTTP ${response.statusCode}.',
     };
@@ -71,8 +72,8 @@ class _InspectionChecklistPageState extends State<InspectionChecklistPage> {
       throw StateError(message);
     }
 
-    final json = jsonDecode(utf8.decode(response.bodyBytes))
-    as Map<String, dynamic>;
+    final json =
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
 
     return _Checklist(
       status: json['status'] as String,
@@ -120,9 +121,7 @@ class _InspectionChecklistPageState extends State<InspectionChecklistPage> {
 
       setState(() {
         _saving = false;
-        _saveError = error is StateError
-            ? error.message
-            : 'Could not confirm the save. Retry the same answers or use Refresh.';
+        _saveError = error is StateError ? error.message : 'Could not confirm the save. Retry the same answers or use Refresh.';
       });
     }
   }
@@ -153,9 +152,7 @@ class _InspectionChecklistPageState extends State<InspectionChecklistPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  error is StateError
-                      ? error.message
-                      : 'Could not load the checklist. Use Refresh to try again.',
+                  error is StateError ? error.message : 'Could not load the checklist. Use Refresh to try again.',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -164,7 +161,8 @@ class _InspectionChecklistPageState extends State<InspectionChecklistPage> {
 
           final checklist = snapshot.requireData;
           final editable = checklist.status == 'scheduled';
-          final ready = editable &&
+          final ready =
+              editable &&
               !_saving &&
               checklist.items.keys.every(_answers.containsKey);
           final saveError = _saveError;
@@ -189,33 +187,33 @@ class _InspectionChecklistPageState extends State<InspectionChecklistPage> {
                     title: Text(item.value),
                     trailing: editable
                         ? DropdownButton<String>(
-                      value: _answers[item.key],
-                      hint: const Text('Select'),
-                      items: [
-                        for (final answer in _answerLabels.entries)
-                          DropdownMenuItem<String>(
-                            value: answer.key,
-                            child: Text(answer.value),
+                            value: _answers[item.key],
+                            hint: const Text('Select'),
+                            items: [
+                              for (final answer in _answerLabels.entries)
+                                DropdownMenuItem<String>(
+                                  value: answer.key,
+                                  child: Text(answer.value),
+                                ),
+                            ],
+                            onChanged: _saving
+                                ? null
+                                : (value) {
+                                    if (value == null) return;
+                                    setState(() {
+                                      _answers[item.key] = value;
+                                    });
+                                  },
+                          )
+                        : Text(
+                            _answerLabels[checklist.results[item.key]] ?? '—',
                           ),
-                      ],
-                      onChanged: _saving
-                          ? null
-                          : (value) {
-                        if (value == null) return;
-                        setState(() {
-                          _answers[item.key] = value;
-                        });
-                      },
-                    )
-                        : Text(_answerLabels[checklist.results[item.key]] ?? '—'),
                   ),
                 ),
               if (editable) ...[
                 const SizedBox(height: 16),
                 FilledButton(
-                  onPressed: ready
-                      ? () => _submit(checklist.items.keys)
-                      : null,
+                  onPressed: ready ? () => _submit(checklist.items.keys) : null,
                   child: Text(_saving ? 'Saving…' : 'Submit checklist'),
                 ),
               ],

@@ -9,11 +9,13 @@ class DemoSession {
     required this.token,
     required this.name,
     required this.role,
+    required this.expiresAt,
   });
 
   final String token;
   final String name;
   final String role;
+  final DateTime expiresAt;
 
   factory DemoSession.fromResponse(String body) {
     final data = jsonDecode(body);
@@ -29,11 +31,27 @@ class DemoSession {
 
     final name = user['name'];
     final role = user['role'];
-    if (name is! String || role is! String) {
+    final expires = data['expires_at'];
+    final expiresAt = expires is String ? DateTime.tryParse(expires) : null;
+    if (name is! String ||
+        role is! String ||
+        !const [
+          'supervisor',
+          'inspector',
+          'maintenance',
+          'custodian',
+        ].contains(role) ||
+        expiresAt == null ||
+        !expiresAt.isAfter(DateTime.now())) {
       throw const FormatException('Invalid account details');
     }
 
-    return DemoSession(token: token, name: name, role: role);
+    return DemoSession(
+      token: token,
+      name: name,
+      role: role,
+      expiresAt: expiresAt,
+    );
   }
 }
 
@@ -135,11 +153,12 @@ class _SignInDialogState extends State<SignInDialog> {
               TextFormField(
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(labelText: 'Demo email'),
+                decoration: const InputDecoration(labelText: 'Email address'),
                 validator: (value) {
                   final email = value?.trim() ?? '';
-                  if (email.isEmpty || email.length > 255) {
-                    return 'Enter a demo email of up to 255 characters.';
+                  if (email.length > 255 ||
+                      !RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(email)) {
+                    return 'Enter a valid email address of up to 255 characters.';
                   }
                   return null;
                 },

@@ -104,7 +104,13 @@ class _InspectionPlanPageState extends State<InspectionPlanPage> {
     );
     if (!mounted || time == null) return;
 
-    final dueAt = DateTime(day.year, day.month, day.day, time.hour, time.minute);
+    final dueAt = DateTime(
+      day.year,
+      day.month,
+      day.day,
+      time.hour,
+      time.minute,
+    );
     final dateLabel = MaterialLocalizations.of(context).formatMediumDate(dueAt);
     final timeLabel = time.format(context);
 

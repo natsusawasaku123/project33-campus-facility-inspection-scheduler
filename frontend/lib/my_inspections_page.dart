@@ -108,7 +108,9 @@ class _MyInspectionsPageState extends State<MyInspectionsPage> {
             itemCount: inspections.length,
             itemBuilder: (context, index) {
               final inspection = inspections[index];
-              final date = localizations.formatShortDate(inspection.scheduledAt);
+              final date = localizations.formatShortDate(
+                inspection.scheduledAt,
+              );
               final time = localizations.formatTimeOfDay(
                 TimeOfDay.fromDateTime(inspection.scheduledAt),
               );
@@ -131,7 +133,9 @@ class _MyInspectionsPageState extends State<MyInspectionsPage> {
 
                     if (mounted) _refresh();
                   },
-                  subtitle: Text('Inspection #${inspection.id}\n$date at $time'),
+                  subtitle: Text(
+                    'Inspection #${inspection.id}\n$date at $time',
+                  ),
                   isThreeLine: true,
                   trailing: Text(inspection.status),
                 ),

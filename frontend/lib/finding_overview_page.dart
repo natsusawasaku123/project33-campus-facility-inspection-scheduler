@@ -116,15 +116,15 @@ class _FindingOverviewPageState extends State<FindingOverviewPage> {
             const SizedBox(height: 8),
             Text(
               '${summary['inspections_completed']} of '
-                  '${summary['inspections_scheduled']} scheduled inspections completed',
+              '${summary['inspections_scheduled']} scheduled inspections completed',
             ),
             Text(completion),
             const SizedBox(height: 8),
             const Text('Current findings'),
             Text(
               '${summary['open_findings']} open · '
-                  '${summary['overdue_findings']} overdue · '
-                  '${summary['escalated_open_findings']} escalated',
+              '${summary['overdue_findings']} overdue · '
+              '${summary['escalated_open_findings']} escalated',
             ),
             Text('${summary['manual_review_alerts']} alerts need human review'),
           ],
